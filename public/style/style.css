@@ -1,0 +1,70 @@
+.search-bar {
+    margin:20px;
+    text-align: center;
+}
+
+.search-bar input {
+    width: 45%;
+}
+
+.video-item img {
+    max-width: 64px;
+}
+
+.video-detail .details {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius:  4px;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #eee;
+}
+
+.search-input {
+    margin-top: 8px;
+}
+
+.you-tube-api {
+ margin-top: 15px;
+}
+
+.ninja-brand {
+  width: 30px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #D3D3D3;
+}
+
+.signature-footer-ninja {
+    color: black;
+}
+
+.dojlidoPortfolioHref {
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+@media screen and (min-width: 0px) and (max-width: 989px) {
+    .footer {
+        bottom: unset;
+    }
+}
+
+
+@media screen and (min-width: 0px) and (max-width: 440px) {
+    .you-tube-api {
+        display: none;
+    }
+}
