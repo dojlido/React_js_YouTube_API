@@ -8,7 +8,7 @@ import VideoList from './components/video_list';
 import VideoDetail from './components/video_detail';
 import Footer from './components/footer';
 
-const API_KEY = '';
+const API_KEY = 'AIzaSyBTYTfzgtno0O712iFnEpBVWExIt7sELbE';
 
 
 class App extends Component {
