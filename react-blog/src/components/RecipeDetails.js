@@ -2,23 +2,24 @@ import React, { Component  } from 'react';
 import {recipe} from "../tempDetails";
 
 export default class RecipeDetails extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            recipe:recipe,
-            url:`https://www.food2fork.com/api/get?key=143a26f910ff7533195caec3e8fe0d6c&rId=${this.props.id}`,
-        }
-    }
+
+     state = {
+         recipe:recipe,
+     };
 
     async componentDidMount() {
+            const id  = this.props.id;
+            const url = `https://www.food2fork.com/api/get?key=143a26f910ff7533195caec3e8fe0d6c&rId=${id}`;
         try {
-            const data = await fetch(this.state.url);
+            const data = await fetch(url);
             const jsonData = await data.json();
-            if (this.props.recipe !== undefined) {
-                this.setState({
-                    recipe: jsonData.recipe
-                });
-            }
+             // if (this.props.recipe !== undefined) {
+                this.setState(
+                    (state, props)=>{
+                    return  {recipe:jsonData.recipe}
+                },
+                    ()=>{});
+             // }
         } catch (e) {
             console.log('Ups coś poszło nie tak! RecipeDetails API message: ' + e);
         }
@@ -34,7 +35,8 @@ export default class RecipeDetails extends Component{
                 ingredients
             } = this.state.recipe;
 
-            const{handleIndex} = this.props;
+            const{handleIndex}      = this.props;
+            const recipe_list_index = 1;
 
             return (
                 <React.Fragment>
@@ -44,7 +46,7 @@ export default class RecipeDetails extends Component{
                                 <button
                                     type="button"
                                     className="btn btn-warning mb-5 text-capitalize"
-                                    onClick={()=>handleIndex(1)}
+                                    onClick={()=>handleIndex(recipe_list_index)}
                                 >
                                     back to recipe list
                                 </button>
