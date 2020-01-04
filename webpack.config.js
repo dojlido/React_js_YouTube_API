@@ -99,6 +99,8 @@ module.exports = function (env) {
                                         }),
                                     ],
                                 },
+                                modules:true,
+                                localIdentName: '[name]__[local]__[hash:base64:5]'
                             }
                         ] }) :
                         [ 'style-loader', 'css-loader', ]

@@ -98,6 +98,8 @@ module.exports = function (env) {
                                             flexbox: 'no-2009',
                                         }),
                                     ],
+                                    modules:true,
+                                    localIdentName: '[name]__[local]__[hash:base64:5]'
                                 },
                             }
                         ] }) :
