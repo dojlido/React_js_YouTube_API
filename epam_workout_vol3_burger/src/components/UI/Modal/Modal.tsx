@@ -15,7 +15,7 @@ interface ModalInterfaceProps {
 
 class Modal extends Component<ModalInterfaceProps,ModalInterfaceState> {
     shouldComponentUpdate(nextProps: Readonly<ModalInterfaceProps>, nextState: Readonly<ModalInterfaceState>, nextContext: any): boolean {
-        return nextProps.show !== this.props.show;
+        return nextProps.show !== this.props.show; //todo nextState
     }
 
     render() {
