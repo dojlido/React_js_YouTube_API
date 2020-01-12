@@ -1,16 +1,19 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
 
 interface NavigationItemInterface {
     link:string;
     children:any;
-    active?:boolean;
+    exact?:any;
 }
 
 const navigationItem = (props:NavigationItemInterface) => (
         <li className={'NavigationItem'}>
-            <a
-            href={props.link}
-            className={props.active ? 'active' : ''}>{props.children}</a>
+            <NavLink
+            to={props.link}
+            exact={props.exact}
+            activeClassName={'active'}
+            >{props.children}</NavLink>
         </li>
 );
 

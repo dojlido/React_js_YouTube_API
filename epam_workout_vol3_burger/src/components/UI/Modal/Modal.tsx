@@ -8,14 +8,14 @@ interface ModalInterfaceState {
 }
 
 interface ModalInterfaceProps {
-    children:any;
+    children?:any;
     show:boolean;
     modalClosed:any;
 }
 
 class Modal extends Component<ModalInterfaceProps,ModalInterfaceState> {
     shouldComponentUpdate(nextProps: Readonly<ModalInterfaceProps>, nextState: Readonly<ModalInterfaceState>, nextContext: any): boolean {
-        return nextProps.show !== this.props.show; //todo nextState
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
     }
 
     render() {

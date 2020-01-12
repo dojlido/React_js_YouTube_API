@@ -1,0 +1,28 @@
+.CheckoutSummary {
+  text-align: center;
+  width: 80%;
+  margin: auto;
+}
+
+.CheckoutSummaryButtons {
+  text-align: center;
+  margin-top: 10%;
+}
+
+.BurgerCheckoutSummaryWrapper {
+  width: 100%;
+  height: 300px;
+  margin: auto;
+}
+
+@media screen and (min-width: 0px) and (max-width: 500px) {
+  .BurgerCheckoutSummaryWrapper {
+    height: 172px;
+  }
+}
+
+@media (min-width: 600px) {
+  .CheckoutSummary {
+    width: 500px;
+  }
+}
