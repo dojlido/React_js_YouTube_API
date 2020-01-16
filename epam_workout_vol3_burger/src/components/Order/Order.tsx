@@ -7,10 +7,13 @@ interface orderProps {
 
 
 const orderIngredients = (orderIngredients:any) => {
+    let orderIngredientsList:any = '';
 
-        const orderIngredientsList = Object.entries(orderIngredients).map(([orderIngredientName, orderIngredientAmount]) =>
+    if(orderIngredients !== undefined) {
+        orderIngredientsList = Object.entries(orderIngredients).map(([orderIngredientName, orderIngredientAmount]) =>
             <p key={orderIngredientName}> {orderIngredientName} : {orderIngredientAmount}</p>
         );
+    }
 
 
     return orderIngredientsList;

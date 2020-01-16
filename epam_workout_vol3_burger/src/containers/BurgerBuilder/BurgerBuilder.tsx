@@ -11,18 +11,16 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import {RouteComponentProps} from "react-router";
 
-
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 2,
-    bacon: 0.7
-};
+import * as actionTypes from '../../store/actions';
+import {connect} from 'react-redux';
 
 type ingredientsType = 'salad' | 'bacon' | 'cheese' | 'meat';
 
 interface MyProps {
-
+    totalPrice:number,
+    ingMapStateToProps:any,
+    ingredientAddedDispatch:any,
+    ingredientRemoveDispatch:any,
 }
 
 interface MyState {
@@ -31,26 +29,19 @@ interface MyState {
 
 class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     state = {
-        ingredients: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0
-        },
-        totalPrice: 4,
-        purchaseable: false,
         purchasing: false,
         loading: false,
         error:false
     };
 
     componentDidMount(): void {
-        axios.get('https://react-my-burger-dojlido.firebaseio.com/ingredients.json')
-            .then(response => {
-                this.setState({ingredients: response.data})
-            }).catch(error => {
-            this.setState({error:true});
-        });
+        //TODO take price of ingriedients from dataBase
+        // axios.get('https://react-my-burger-dojlido.firebaseio.com/ingredients.json')
+        //     .then(response => {
+        //         this.setState({ingredients: response.data})
+        //     }).catch(error => {
+        //     this.setState({error:true});
+        // });
     }
 
     private updatePurchaseState(ingredients: { [key: string]: number }) {
@@ -61,47 +52,8 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
             .reduce((sum, el) => {
                 return sum + el;
             }, 0);
-        this.setState({purchaseable: sum > 0});
+       return  sum > 0;
     }
-
-    private addIngredientHandler = (ingredientsType: ingredientsType) => {
-        const oldCount = this.state.ingredients[ingredientsType];
-        const updateCount = oldCount + 1;
-
-        const updatedIngredients = {
-            ...this.state.ingredients
-        };
-
-        updatedIngredients[ingredientsType] = updateCount;
-
-        const priceAddition = INGREDIENT_PRICES[ingredientsType];
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice + priceAddition;
-
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-        this.updatePurchaseState(updatedIngredients);
-    };
-
-    private removeIngredientHandler = (ingredientsType: ingredientsType) => {
-        const oldCount = this.state.ingredients[ingredientsType];
-        if (oldCount <= 0) {
-            return;
-        }
-        const updateCount = oldCount - 1;
-
-        const updatedIngredients = {
-            ...this.state.ingredients
-        };
-
-        updatedIngredients[ingredientsType] = updateCount;
-
-        const priceDeduction = INGREDIENT_PRICES[ingredientsType];
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice - priceDeduction;
-
-        this.setState({totalPrice: newPrice, ingredients: updatedIngredients})
-        this.updatePurchaseState(updatedIngredients);
-    };
 
     private purchaseHandler = () => {
         this.setState({purchasing: true});
@@ -112,37 +64,17 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     };
 
     private purchaseContinueHandler = () => {
-        //this.setState({purchasing:false});
-        //alert('You continue!')
         this.checkoutController(); //props.history from React Router component
-
     };
 
     private checkoutController = () => {
-        const queryParams = [];
-
-        const ingredients: { [key: string]: any } = {
-            ...this.state.ingredients
-        };
-
-        for(let ingredientType in ingredients)
-        {
-            queryParams.push(encodeURIComponent(ingredientType)+ '=' + encodeURIComponent(ingredients[ingredientType]))
-        }
-
-        queryParams.push('totalPrice='+this.state.totalPrice); //todo zrefactorowac
-
-        const queryString = queryParams.join('&');
-        return this.props.history.push({ //props.history from React Router component
-            pathname:'/checkout',
-            search:'?' + queryString
-        });
+        return this.props.history.push('/checkout'); //props.history from React Router component
     };
 
     private disableInfoHandler = (): any => {
         //TODO here is define type of object key - is necessary for TS
         const disableInfo: { [key: string]: any } = {
-            ...this.state.ingredients
+            ...this.props.ingMapStateToProps
         };
 
         for (let key in disableInfo) {
@@ -154,11 +86,11 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 
     private spinnerForOrderSummary = (): any => {
         let orderSummary = null;
-        if(this.state.ingredients) {
-             orderSummary = <OrderSummary ingredients={this.state.ingredients}
+        if(this.props.ingMapStateToProps) {
+             orderSummary = <OrderSummary ingredients={this.props.ingMapStateToProps}
                                              purchaseCancel={this.purchaseCancelHandler}
                                              purchaseContinue={this.purchaseContinueHandler}
-                                             price={this.state.totalPrice}
+                                             price={this.props.totalPrice}
             />;
         }
 
@@ -172,17 +104,16 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 
     private ifIssetIngredientsReturnBurger = () => {
         let burger = this.state.error ? <p>Kaboom!</p> : <Spinner/>;
-
-       if(this.state.ingredients) {
+       if(this.props.ingMapStateToProps) {
            burger = (
                <Aux>
-                   <Burger ingredients={this.state.ingredients}/>
+                   <Burger ingredients={this.props.ingMapStateToProps}/>
                    <BuildControls
-                       ingredientAdded={this.addIngredientHandler}
-                       ingredientRemove={this.removeIngredientHandler}
+                       ingredientAdded={this.props.ingredientAddedDispatch}
+                       ingredientRemove={this.props.ingredientRemoveDispatch}
                        disabled={this.disableInfoHandler()}
-                       price={this.state.totalPrice}
-                       purchaseable={this.state.purchaseable}
+                       price={this.props.totalPrice}
+                       purchaseable={this.updatePurchaseState(this.props.ingMapStateToProps)}
                        ordered={this.purchaseHandler}
                    />
                </Aux>
@@ -205,4 +136,18 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     }
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+const mapStateToProps = (state:any) => {
+    return {
+        ingMapStateToProps:state.ingredients,
+        totalPrice:state.totalPrice
+    };
+};
+
+const mapDispatchToProps = (dispatch:any) => {
+    return {
+        ingredientAddedDispatch:  (ingredientNameParam:string) => dispatch({type:actionTypes.ADD_INGREDIENT, ingredientName: ingredientNameParam}),
+        ingredientRemoveDispatch: (ingredientNameParam:string) => dispatch({type:actionTypes.REMOVE_INGREDIENT, ingredientName: ingredientNameParam})
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

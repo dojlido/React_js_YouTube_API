@@ -9,12 +9,15 @@ import {withRouter} from 'react-router-dom';
 
 import Input from '../../../components/UI/Input/Input';
 
+import {connect} from 'react-redux';
+
+
 interface AppState {
 }
 
 interface AppProps {
-    ingredients:any; //to change to properly type
-    totalPrice:number;
+    ingMapStateToProps:any; //to change to properly type
+    totalPriceMapStateToProp:number;
 }
 
 class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
@@ -94,7 +97,9 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: '',
+                value: 'fastest',
+                validation:{ //TODO no rules of validity for <select>
+                },
                 valid:true
             }
         },
@@ -154,8 +159,8 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
          this.setState({loading: true})
 
          const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.totalPrice,
+            ingredients: this.props.ingMapStateToProps,
+            price: this.props.totalPriceMapStateToProp,
             orderInputsValue:this.orderInputsValue()
         };
          axios.post('/orders.json', order)
@@ -248,4 +253,11 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
     }
 }
 
-export default withRouter(ContactData);
+const mapStateToProps = (state:any) => {
+    return {
+        ingMapStateToProps:state.ingredients,
+        totalPriceMapStateToProp:state.totalPrice,
+    };
+};
+
+export default connect(mapStateToProps)(ContactData);

@@ -4,38 +4,17 @@ import ContactData from './ContactData/ContactData';
 
 import {RouteComponentProps} from "react-router";
 import {Route} from 'react-router-dom';
-
+import {connect} from 'react-redux';
 
 interface AppState {
 }
 
 interface AppProps {
-
+    ingMapStateToProps:any,
+    totalPrice:number
 }
 
 class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
-    state = {
-        ingredients: null,
-        totalPrice:0
-    };
-
-    componentWillMount(): void {
-        const query = new URLSearchParams(this.props.location.search);
-        const ingredients: { [key: string]: any }  = {};
-        let price:any  = 0; //todo zrefactorowac
-
-        for (let ingredientKeyValue of query.entries() )
-        {
-            if(ingredientKeyValue[0] === 'totalPrice')
-            {
-                price = ingredientKeyValue[1];
-            }
-            else {
-                ingredients[ingredientKeyValue[0]] = +ingredientKeyValue[1];
-            }
-        }
-        this.setState({ingredients:ingredients, totalPrice:price});
-    }
 
     private checkoutCancelledHandler = () => {
         this.props.history.goBack();
@@ -51,14 +30,20 @@ class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
                 <CheckoutSummary
                     checkoutCancelled={this.checkoutCancelledHandler}
                     checkoutContinue={this.checkoutContinueHandler}
-                    ingredients={this.state.ingredients}/>
+                    ingredients={this.props.ingMapStateToProps}/>
                         <Route
                             path={this.props.match.path + '/contact-data'}
-                            render={() => (<ContactData ingredients={this.state.ingredients} totalPrice={this.state.totalPrice} />)}
+                            component={ContactData}
                         />
             </div>
         );
     }
 }
 
-export default Checkout;
+const mapStateToProps = (state:any) => {
+    return {
+        ingMapStateToProps:state.ingredients,
+    };
+};
+
+export default connect(mapStateToProps)(Checkout);
