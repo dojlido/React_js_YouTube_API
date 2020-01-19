@@ -12,7 +12,7 @@ const burger = (props:propBurger) => {
            return <BurgerIngredient key={igredientKeyIngredientName as string + i as string} type={igredientKeyIngredientName as string} />
         });
     }).reduce((arr, el) : any  => {
-        return arr.concat(el);
+        return arr.concat(el).reverse();
     }, []);
 
     if(transformedIngredients.length === 0)

@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 
 import {Provider} from 'react-redux';
-import { createStore } from 'redux';
-import reducer from "./store/reducer";
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
+import burgerBuilder from "./store/reducers/burgerBuilder";
+
 
 import './index.css';
 import './scss/main.scss';
@@ -12,7 +14,16 @@ import './scss/main.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(reducer);
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__:any;
+    }
+}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;//this givs POSIBILLITY TO LOGIN (ex. error log) IN MOZILLA PLUGIN DEV TOOLS
+
+const store = createStore(burgerBuilder, composeEnhancers(
+    applyMiddleware(thunk)
+));
 
 const wrappedApp = (
     <Provider store={store}>

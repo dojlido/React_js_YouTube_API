@@ -32,6 +32,7 @@ export const substract = (valueParam) => {
     };
 };
 
+
 export const saveResult = (resultParam) => {
 
     return  {

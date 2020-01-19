@@ -1,5 +1,6 @@
 import React from 'react';
 import {Component} from "react";
+
 import axios from '../../axios-orders'
 
 import Aux from '../../hoc/Auxiliary/Auxiliary';
@@ -11,8 +12,11 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import {RouteComponentProps} from "react-router";
 
-import * as actionTypes from '../../store/actions';
 import {connect} from 'react-redux';
+import * as actionCreatorBB from '../../store/actions'; //aitomatically import index file from actions folder
+
+import {l} from '../../helper/helper';
+
 
 type ingredientsType = 'salad' | 'bacon' | 'cheese' | 'meat';
 
@@ -21,6 +25,9 @@ interface MyProps {
     ingMapStateToProps:any,
     ingredientAddedDispatch:any,
     ingredientRemoveDispatch:any,
+    fetchIngriedientError:any,
+    initialIngriedient:any,
+    error:boolean
 }
 
 interface MyState {
@@ -30,18 +37,10 @@ interface MyState {
 class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     state = {
         purchasing: false,
-        loading: false,
-        error:false
     };
 
     componentDidMount(): void {
-        //TODO take price of ingriedients from dataBase
-        // axios.get('https://react-my-burger-dojlido.firebaseio.com/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ingredients: response.data})
-        //     }).catch(error => {
-        //     this.setState({error:true});
-        // });
+        this.props.initialIngriedient();
     }
 
     private updatePurchaseState(ingredients: { [key: string]: number }) {
@@ -94,16 +93,12 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
             />;
         }
 
-        if (this.state.loading) {
-            orderSummary = <Spinner/>;
-        }
-
         return orderSummary;
 
     };
 
     private ifIssetIngredientsReturnBurger = () => {
-        let burger = this.state.error ? <p>Kaboom!</p> : <Spinner/>;
+        let burger = this.props.fetchIngriedientError ? <p>Kaboom ! Something went wrong :(</p> : <Spinner/>;
        if(this.props.ingMapStateToProps) {
            burger = (
                <Aux>
@@ -139,14 +134,16 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 const mapStateToProps = (state:any) => {
     return {
         ingMapStateToProps:state.ingredients,
-        totalPrice:state.totalPrice
+        totalPrice:state.totalPrice,
+        fetchIngriedientError:state.error,
     };
 };
 
 const mapDispatchToProps = (dispatch:any) => {
     return {
-        ingredientAddedDispatch:  (ingredientNameParam:string) => dispatch({type:actionTypes.ADD_INGREDIENT, ingredientName: ingredientNameParam}),
-        ingredientRemoveDispatch: (ingredientNameParam:string) => dispatch({type:actionTypes.REMOVE_INGREDIENT, ingredientName: ingredientNameParam})
+        ingredientAddedDispatch:  (ingredientNameParam:string) => dispatch(actionCreatorBB.addIngredient(ingredientNameParam)),
+        ingredientRemoveDispatch: (ingredientNameParam:string) => dispatch(actionCreatorBB.removeIngredient(ingredientNameParam)),
+        initialIngriedient: () => dispatch(actionCreatorBB.initialIngriedient()),
     };
 };
 
