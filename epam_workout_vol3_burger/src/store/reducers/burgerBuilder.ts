@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from '../actionsCreators/actionTypes';
 
 const initialState = {
     ingredients: {},
@@ -52,7 +52,8 @@ const burgerBuilder = (state: IState = initialState, action: IAction) => {
             return {
                 ...state,
                 ingredients: action.ingriedients,
-                error:false
+                error:false,
+                totalPrice:4
             };
         case  actionTypes.FETCH_INGREDIENT_ERROR:
             return {

@@ -4,8 +4,9 @@ import {BrowserRouter} from 'react-router-dom';
 
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware, compose } from 'redux';
-import burgerBuilder from "./store/reducers/burgerBuilder";
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import burgerBuilderReducer from "./store/reducers/burgerBuilder";
+import orderReducer from "./store/reducers/order";
 
 
 import './index.css';
@@ -21,7 +22,12 @@ declare global {
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;//this givs POSIBILLITY TO LOGIN (ex. error log) IN MOZILLA PLUGIN DEV TOOLS
 
-const store = createStore(burgerBuilder, composeEnhancers(
+const rootReducer = combineReducers({
+    burgerBuilder: burgerBuilderReducer,
+    order: orderReducer
+});
+
+const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
 ));
 

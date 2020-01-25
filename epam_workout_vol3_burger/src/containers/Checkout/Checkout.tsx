@@ -3,15 +3,18 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import ContactData from './ContactData/ContactData';
 
 import {RouteComponentProps} from "react-router";
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import * as actionCreatorBB from "../../store/actionsCreators";
 
 interface AppState {
 }
 
 interface AppProps {
     ingMapStateToProps:any,
-    totalPrice:number
+    totalPrice:number,
+    purchaseInit:any, //change to properly type
+    purchasedMapStateToProps:boolean
 }
 
 class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
@@ -24,25 +27,38 @@ class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
         this.props.history.replace('/checkout/contact-data');  //change route after clik continue button
     };
 
+    private ifCheckoutSummaryIsEmptyRedirect = () => {
+        let summary = <Redirect to="/"/>;
+        if(this.props.ingMapStateToProps)
+        {
+            const purchasedRedirect = this.props.purchasedMapStateToProps ? <Redirect to="/"/> : null;
+             summary = (
+                <div>
+                    {purchasedRedirect}
+                    <CheckoutSummary
+                        checkoutCancelled={this.checkoutCancelledHandler}
+                        checkoutContinue={this.checkoutContinueHandler}
+                        ingredients={this.props.ingMapStateToProps}
+                    />
+                    <Route
+                        path={this.props.match.path + '/contact-data'}
+                        component={ContactData}
+                    />
+                </div>
+            );
+        }
+        return summary;
+    };
+
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        return(
-            <div>
-                <CheckoutSummary
-                    checkoutCancelled={this.checkoutCancelledHandler}
-                    checkoutContinue={this.checkoutContinueHandler}
-                    ingredients={this.props.ingMapStateToProps}/>
-                        <Route
-                            path={this.props.match.path + '/contact-data'}
-                            component={ContactData}
-                        />
-            </div>
-        );
+        return this.ifCheckoutSummaryIsEmptyRedirect();
     }
 }
 
 const mapStateToProps = (state:any) => {
     return {
-        ingMapStateToProps:state.ingredients,
+        ingMapStateToProps:state.burgerBuilder.ingredients,
+        purchasedMapStateToProps:state.order.purchased
     };
 };
 

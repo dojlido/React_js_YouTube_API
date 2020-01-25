@@ -13,7 +13,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import {RouteComponentProps} from "react-router";
 
 import {connect} from 'react-redux';
-import * as actionCreatorBB from '../../store/actions'; //aitomatically import index file from actions folder
+import * as actionCreatorBB from '../../store/actionsCreators'; //aitomatically import index file from actions folder
 
 import {l} from '../../helper/helper';
 
@@ -27,6 +27,7 @@ interface MyProps {
     ingredientRemoveDispatch:any,
     fetchIngriedientError:any,
     initialIngriedient:any,
+    purchaseInit:any,
     error:boolean
 }
 
@@ -67,6 +68,7 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     };
 
     private checkoutController = () => {
+        this.props.purchaseInit();
         return this.props.history.push('/checkout'); //props.history from React Router component
     };
 
@@ -133,9 +135,9 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 
 const mapStateToProps = (state:any) => {
     return {
-        ingMapStateToProps:state.ingredients,
-        totalPrice:state.totalPrice,
-        fetchIngriedientError:state.error,
+        ingMapStateToProps:state.burgerBuilder.ingredients,
+        totalPrice:state.burgerBuilder.totalPrice,
+        fetchIngriedientError:state.burgerBuilder.error,
     };
 };
 
@@ -144,6 +146,7 @@ const mapDispatchToProps = (dispatch:any) => {
         ingredientAddedDispatch:  (ingredientNameParam:string) => dispatch(actionCreatorBB.addIngredient(ingredientNameParam)),
         ingredientRemoveDispatch: (ingredientNameParam:string) => dispatch(actionCreatorBB.removeIngredient(ingredientNameParam)),
         initialIngriedient: () => dispatch(actionCreatorBB.initialIngriedient()),
+        purchaseInit: () => dispatch(actionCreatorBB.purchaseInit()),
     };
 };
 

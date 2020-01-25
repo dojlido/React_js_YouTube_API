@@ -5,19 +5,21 @@ import axios from '../../../axios-orders'
 
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import {RouteComponentProps} from "react-router";
-import {withRouter} from 'react-router-dom';
-
 import Input from '../../../components/UI/Input/Input';
 
 import {connect} from 'react-redux';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actionCreatorBurgerOrders from "../../../store/actionsCreators";
 
 
 interface AppState {
 }
 
 interface AppProps {
-    ingMapStateToProps:any; //to change to properly type
+    loadingStateToProps:boolean;
+    ingMapStateToProps:any; //todo change to properly type
     totalPriceMapStateToProp:number;
+    sendOrderData:any; //todo change to properly type
 }
 
 class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
@@ -103,7 +105,6 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
                 valid:true
             }
         },
-        loading:false,
         formIsValid:false
     };
 
@@ -156,22 +157,14 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
 
     private orderHandler = (event:any) => {
         event.preventDefault();
-         this.setState({loading: true})
 
          const order = {
             ingredients: this.props.ingMapStateToProps,
             price: this.props.totalPriceMapStateToProp,
             orderInputsValue:this.orderInputsValue()
         };
-         axios.post('/orders.json', order)
-         .then(response => {
-                this.setState({loading: false});
-                this.props.history.push('/'); //return to home page
-            })
-         .catch(error => {
-                this.setState({loading: false});
-            });
 
+        this.props.sendOrderData(order);
     };
 
     private inputChangeHandler = (event:any, inputName:string) => {
@@ -235,7 +228,7 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
                 </Button>
             </form>
         );
-        if( this.state.loading )
+        if( this.props.loadingStateToProps )
         {
             contactForm = <Spinner/>
         }
@@ -255,9 +248,16 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
 
 const mapStateToProps = (state:any) => {
     return {
-        ingMapStateToProps:state.ingredients,
-        totalPriceMapStateToProp:state.totalPrice,
+        loadingStateToProps:state.order.loading,
+        ingMapStateToProps:state.burgerBuilder.ingredients,
+        totalPriceMapStateToProp:state.burgerBuilder.totalPrice,
     };
 };
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = (dispatch:any) => {
+    return {
+        sendOrderData:  (orderDataParam:any) => dispatch( actionCreatorBurgerOrders.sendOrderData(orderDataParam) ),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
