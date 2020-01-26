@@ -1,3 +1,5 @@
 export const l = (param:any) => {
-    console.log('type :'+ typeof param +'- '+param);
+    console.log(typeof param);
+    console.table(param);
+    console.trace(param)
 };

@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders'
+import {l} from '../../helper/helper';
 
 // PURCHASE BURGER START
 export const purchaseBurgerStart = () => {
@@ -9,7 +10,7 @@ export const purchaseBurgerStart = () => {
 };
 
 
-export const purchaseBurgerSucess = (idParam: number, orderDataParam: any) => {
+export const purchaseBurgerSucess = (idParam: any, orderDataParam: any) => {
     return {
         type: actionTypes.PURCHASE_BURGER_SUCCESS,
         orderId: idParam,
@@ -24,12 +25,13 @@ export const purchaseBurgerFail = (errorParam: any) => {
     };
 };
 
-export const sendOrderData = (orderDataParam: any) => {
+export const sendOrderData = (orderDataParam: any, routerHistoryBack:any) => {
     return (dispatch: any) => { //TODO send order to DATABASE
         dispatch(purchaseBurgerStart());
         axios.post('/orders.json', orderDataParam)
             .then(response => {
                 dispatch( purchaseBurgerSucess(response.data.name, orderDataParam) );
+                return routerHistoryBack;
             })
             .catch(error => {
                 dispatch( purchaseBurgerFail(error) );
@@ -45,21 +47,49 @@ export const purchaseInit = () => {
 // PURCHASE BURGER END
 
 // FETCH ORDERS START
-export const fetchOrdersStar = () => {
+export const fetchOrdersStart = () => {
     return {
-        type: actionTypes.PURCHASE_BURGER_START,
+        type: actionTypes.FETCH_ORDERS_START
     };
 };
 
-export const fetchOrdersSuccess = () => {
+export const fetchOrdersSuccess = (ordersParam:string[]) => {
     return {
-        type: actionTypes.PURCHASE_BURGER_START,
+        type: actionTypes.FETCH_ORDERS_SUCCESS,
+        orders:ordersParam
     };
 };
 
-export const fetchOrdersFail = () => {
+export const fetchOrdersFail = (errorParam:any) => {
     return {
-        type: actionTypes.PURCHASE_BURGER_START,
+        type: actionTypes.FETCH_ORDERS_FAIL,
+        error:errorParam
+    };
+};
+
+const turnFireBaseObjectIntoArray = (response:any) => {
+
+    const fetchedOrders : any = [];
+
+    Object.values(response).map( (orders:any) => {
+        fetchedOrders.push(
+            orders
+        );
+    });
+
+    return fetchedOrders[0];
+};
+
+export const getOrderData = () => {
+    return (dispatch: any) => {
+        dispatch(fetchOrdersStart());
+        axios.get('/orders.json').then(
+            response => {
+                dispatch( fetchOrdersSuccess(turnFireBaseObjectIntoArray(response)) )
+            }
+        ).catch(err =>{
+            dispatch( fetchOrdersFail(err) )
+        });
     };
 };
 // FETCH ORDERS END

@@ -10,6 +10,7 @@ import Input from '../../../components/UI/Input/Input';
 import {connect} from 'react-redux';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actionCreatorBurgerOrders from "../../../store/actionsCreators";
+import {l} from '../../../helper/helper';
 
 
 interface AppState {
@@ -17,7 +18,7 @@ interface AppState {
 
 interface AppProps {
     loadingStateToProps:boolean;
-    ingMapStateToProps:any; //todo change to properly type
+    ingredientsMapStateToProps:any; //todo change to properly type
     totalPriceMapStateToProp:number;
     sendOrderData:any; //todo change to properly type
 }
@@ -159,12 +160,13 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
         event.preventDefault();
 
          const order = {
-            ingredients: this.props.ingMapStateToProps,
+            ingredients: this.props.ingredientsMapStateToProps,
             price: this.props.totalPriceMapStateToProp,
             orderInputsValue:this.orderInputsValue()
         };
 
-        this.props.sendOrderData(order);
+
+        this.props.sendOrderData(order, this.props.history.push('/'));
     };
 
     private inputChangeHandler = (event:any, inputName:string) => {
@@ -232,7 +234,6 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
         {
             contactForm = <Spinner/>
         }
-
         return contactForm;
     };
 
@@ -249,14 +250,14 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
 const mapStateToProps = (state:any) => {
     return {
         loadingStateToProps:state.order.loading,
-        ingMapStateToProps:state.burgerBuilder.ingredients,
+        ingredientsMapStateToProps:state.burgerBuilder.ingredients,
         totalPriceMapStateToProp:state.burgerBuilder.totalPrice,
     };
 };
 
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps  = (dispatch:any) => {
     return {
-        sendOrderData:  (orderDataParam:any) => dispatch( actionCreatorBurgerOrders.sendOrderData(orderDataParam) ),
+        sendOrderData:  (orderDataParam:any, historyBack:any) => dispatch( actionCreatorBurgerOrders.sendOrderData(orderDataParam,  historyBack) ),
     };
 };
 

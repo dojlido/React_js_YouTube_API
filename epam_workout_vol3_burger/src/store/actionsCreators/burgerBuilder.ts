@@ -32,7 +32,7 @@ export const initialIngriedient = () => {
 export const setIngriedient = (ingriedientsParam:any) => {
     return {
         type:actionTypes.SET_INGREDIENT,
-        ingriedients:ingriedientsParam
+        ingredients:ingriedientsParam
     };
 };
 

@@ -6,12 +6,13 @@ import {RouteComponentProps} from "react-router";
 import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actionCreatorBB from "../../store/actionsCreators";
+import {l} from '../../helper/helper';
 
 interface AppState {
 }
 
 interface AppProps {
-    ingMapStateToProps:any,
+    ingredientsMapStateToProps:any,
     totalPrice:number,
     purchaseInit:any, //change to properly type
     purchasedMapStateToProps:boolean
@@ -29,7 +30,7 @@ class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
 
     private ifCheckoutSummaryIsEmptyRedirect = () => {
         let summary = <Redirect to="/"/>;
-        if(this.props.ingMapStateToProps)
+        if(this.props.ingredientsMapStateToProps)
         {
             const purchasedRedirect = this.props.purchasedMapStateToProps ? <Redirect to="/"/> : null;
              summary = (
@@ -38,7 +39,7 @@ class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
                     <CheckoutSummary
                         checkoutCancelled={this.checkoutCancelledHandler}
                         checkoutContinue={this.checkoutContinueHandler}
-                        ingredients={this.props.ingMapStateToProps}
+                        ingredients={this.props.ingredientsMapStateToProps}
                     />
                     <Route
                         path={this.props.match.path + '/contact-data'}
@@ -57,7 +58,7 @@ class Checkout extends Component<AppProps & RouteComponentProps, AppState> {
 
 const mapStateToProps = (state:any) => {
     return {
-        ingMapStateToProps:state.burgerBuilder.ingredients,
+        ingredientsMapStateToProps:state.burgerBuilder.ingredients,
         purchasedMapStateToProps:state.order.purchased
     };
 };

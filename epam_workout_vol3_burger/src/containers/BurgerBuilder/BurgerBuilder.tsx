@@ -22,7 +22,7 @@ type ingredientsType = 'salad' | 'bacon' | 'cheese' | 'meat';
 
 interface MyProps {
     totalPrice:number,
-    ingMapStateToProps:any,
+    ingredientsMapStateToProps:any,
     ingredientAddedDispatch:any,
     ingredientRemoveDispatch:any,
     fetchIngriedientError:any,
@@ -75,7 +75,7 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     private disableInfoHandler = (): any => {
         //TODO here is define type of object key - is necessary for TS
         const disableInfo: { [key: string]: any } = {
-            ...this.props.ingMapStateToProps
+            ...this.props.ingredientsMapStateToProps
         };
 
         for (let key in disableInfo) {
@@ -87,8 +87,8 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 
     private spinnerForOrderSummary = (): any => {
         let orderSummary = null;
-        if(this.props.ingMapStateToProps) {
-             orderSummary = <OrderSummary ingredients={this.props.ingMapStateToProps}
+        if(this.props.ingredientsMapStateToProps) {
+             orderSummary = <OrderSummary ingredients={this.props.ingredientsMapStateToProps}
                                              purchaseCancel={this.purchaseCancelHandler}
                                              purchaseContinue={this.purchaseContinueHandler}
                                              price={this.props.totalPrice}
@@ -101,16 +101,16 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 
     private ifIssetIngredientsReturnBurger = () => {
         let burger = this.props.fetchIngriedientError ? <p>Kaboom ! Something went wrong :(</p> : <Spinner/>;
-       if(this.props.ingMapStateToProps) {
+       if(this.props.ingredientsMapStateToProps) {
            burger = (
                <Aux>
-                   <Burger ingredients={this.props.ingMapStateToProps}/>
+                   <Burger ingredients={this.props.ingredientsMapStateToProps}/>
                    <BuildControls
                        ingredientAdded={this.props.ingredientAddedDispatch}
                        ingredientRemove={this.props.ingredientRemoveDispatch}
                        disabled={this.disableInfoHandler()}
                        price={this.props.totalPrice}
-                       purchaseable={this.updatePurchaseState(this.props.ingMapStateToProps)}
+                       purchaseable={this.updatePurchaseState(this.props.ingredientsMapStateToProps)}
                        ordered={this.purchaseHandler}
                    />
                </Aux>
@@ -135,7 +135,7 @@ class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
 
 const mapStateToProps = (state:any) => {
     return {
-        ingMapStateToProps:state.burgerBuilder.ingredients,
+        ingredientsMapStateToProps:state.burgerBuilder.ingredients,
         totalPrice:state.burgerBuilder.totalPrice,
         fetchIngriedientError:state.burgerBuilder.error,
     };

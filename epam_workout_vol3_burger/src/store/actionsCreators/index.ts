@@ -1,2 +1,2 @@
 export {addIngredient, removeIngredient, initialIngriedient} from './burgerBuilder'
-export {sendOrderData, purchaseInit} from './order'
+export {sendOrderData, purchaseInit, getOrderData} from './order'
