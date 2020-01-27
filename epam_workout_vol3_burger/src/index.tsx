@@ -20,7 +20,9 @@ declare global {
         __REDUX_DEVTOOLS_EXTENSION_COMPOSE__:any;
     }
 }
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;//this givs POSIBILLITY TO LOGIN (ex. error log) IN MOZILLA PLUGIN DEV TOOLS
+
+let isDevelopemnt = process.env.NODE_ENV === 'development';
+const composeEnhancers = isDevelopemnt ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;//this givs POSIBILLITY TO LOGIN (ex. error log) IN MOZILLA PLUGIN DEV TOOLS
 
 const rootReducer = combineReducers({
     burgerBuilder: burgerBuilderReducer,

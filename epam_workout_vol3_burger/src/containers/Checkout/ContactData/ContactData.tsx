@@ -10,6 +10,7 @@ import Input from '../../../components/UI/Input/Input';
 import {connect} from 'react-redux';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actionCreatorBurgerOrders from "../../../store/actionsCreators";
+import {updateObject} from "../../../shared/utility";
 import {l} from '../../../helper/helper';
 
 
@@ -170,18 +171,19 @@ class ContactData extends Component<AppProps & RouteComponentProps, AppState> {
     };
 
     private inputChangeHandler = (event:any, inputName:string) => {
-        const updatedValueOfInputs : { [key: string]: any } = {
-            ...this.state.orderForm       //TODO clone state by spread operator don't prevent from state mutation !!!
-        };
 
-        const updatedValueOfInput: { [key: string]: any } = { //TODO right way to change property of state immutable!!!
-            ...updatedValueOfInputs[inputName]
-        };
+        const orderForm : { [key: string]: any; } = this.state.orderForm;
+        const updatedValueOfInput = updateObject(orderForm[inputName],
+            {
+                value:event.target.value,
+                valid:this.chekValidity(event.target.value, orderForm[inputName].validation),
+                isTouched:true
+            });
 
-        updatedValueOfInput.value = event.target.value;
-        updatedValueOfInput.valid = this.chekValidity(updatedValueOfInput.value, updatedValueOfInput.validation);
-        updatedValueOfInput.isTouched = true;
-        updatedValueOfInputs[inputName] = updatedValueOfInput;
+        const updatedValueOfInputs = updateObject(this.state.orderForm,
+            {
+                [inputName]:updatedValueOfInput
+            });
 
         this.setState({
             orderForm: updatedValueOfInputs,
