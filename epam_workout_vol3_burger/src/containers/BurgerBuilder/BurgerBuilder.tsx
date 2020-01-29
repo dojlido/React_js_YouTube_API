@@ -35,7 +35,7 @@ interface MyState {
 
 }
 
-class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
+export class BurgerBuilder extends Component<MyProps & RouteComponentProps, MyState> {
     state = {
         purchasing: false,
     };

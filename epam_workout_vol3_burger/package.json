@@ -6,6 +6,7 @@
     "@babel/core": "7.6.0",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@svgr/webpack": "4.3.2",
+    "@testing-library/jest-dom": "^5.0.2",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.14",
     "@types/radium": "^0.24.2",

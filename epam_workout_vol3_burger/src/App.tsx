@@ -10,7 +10,7 @@ const asyncCheckout = asyncComponent( () => {
     return import('../src/containers/Checkout/Checkout');
 });
 
-const asyncOrders = asyncComponent( () => {
+const asyncOrders = asyncComponent( () => { //lazy loading functionality
     return import('./containers/Orders/Orders');
 });
 
