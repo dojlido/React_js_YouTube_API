@@ -1,13 +1,14 @@
 import * as actionTypes from '../actionsCreators/actionTypes';
 import {initialIngriedient} from './burgerBuilderSaga';
-import {sendOrderData} from './orderSaga';
+import {sendOrderData, getOrderData} from './orderSaga';
 
-import {takeEvery} from 'redux-saga/effects';
+import {takeEvery, takeLatest} from 'redux-saga/effects';
 
 export function* watchBurgerBuilderSaga() {
     yield takeEvery(actionTypes.SAGA_INITIAL_INGRIEDIENT, initialIngriedient)
 }
 
 export function* watchOrderSaga() {
-    yield takeEvery(actionTypes.SAGA_SEND_ORDER_DATA, sendOrderData)
+    yield takeLatest(actionTypes.SAGA_SEND_ORDER_DATA, sendOrderData); //in this case take latest clickEvent
+    yield takeEvery(actionTypes.SAGA_GET_ORDER_DATA, getOrderData);
 }

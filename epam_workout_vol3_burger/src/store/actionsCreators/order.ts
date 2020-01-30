@@ -1,6 +1,4 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-orders'
-import {l} from '../../helper/helper';
 
 // PURCHASE BURGER START
 export const purchaseBurgerStart = () => {
@@ -25,12 +23,20 @@ export const purchaseBurgerFail = (errorParam: any) => {
     };
 };
 
+/**ASYNC REQUEST - react saga*/
 export const sendOrderData = (orderDataParam: any, routerHistoryBack:any) => {
     return {
         type: actionTypes.SAGA_SEND_ORDER_DATA,
         orderDataParam: orderDataParam,
         routerHistoryBack: routerHistoryBack
     }
+};
+
+/**ASYNC REQUEST - react saga*/
+export const getOrderData = () => {
+    return {
+        type: actionTypes.SAGA_GET_ORDER_DATA,
+    };
 };
 
 export const purchaseInit = () => {
@@ -61,6 +67,7 @@ export const fetchOrdersFail = (errorParam:any) => {
     };
 };
 
+/** TODO ARROW FUNCTION TYPED WITH TS
 const turnFireBaseObjectIntoArray = (response:any) => {
 
     const fetchedOrders : any = [];
@@ -73,17 +80,5 @@ const turnFireBaseObjectIntoArray = (response:any) => {
 
     return fetchedOrders[0];
 };
-
-export const getOrderData = () => {
-    return (dispatch: any) => {
-        dispatch(fetchOrdersStart());
-        axios.get('/orders.json').then(
-            response => {
-                dispatch( fetchOrdersSuccess(turnFireBaseObjectIntoArray(response)) )
-            }
-        ).catch(err =>{
-            dispatch( fetchOrdersFail(err) )
-        });
-    };
-};
+ */
 // FETCH ORDERS END
