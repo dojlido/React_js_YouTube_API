@@ -15,18 +15,11 @@ export const removeIngredient = (ingredientNameParam:string) => {
     };
 };
 
-
-/**ASYNC REQUEST - react thunk*/
+/**ASYNC REQUEST - react saga*/
 export const initialIngriedient = () => {
-    return (dispatch:any) =>  {
-        //TODO take price of ingriedients from dataBase
-        axios.get('https://react-my-burger-dojlido.firebaseio.com/ingredients.json')
-            .then(response => {
-                dispatch(setIngriedient(response.data))
-            }).catch(error => {
-                dispatch(fetchIngriedientError());
-        });
-    };
+    return {
+        type:actionTypes.SAGA_INITIAL_INGRIEDIENT,
+    }
 };
 
 export const setIngriedient = (ingriedientsParam:any) => {

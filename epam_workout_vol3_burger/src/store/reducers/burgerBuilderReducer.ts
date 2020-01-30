@@ -74,8 +74,8 @@ const burgerBuilderReducer = (state: IState = initialState, action: IAction) => 
     switch (action.type) {
         case actionTypes.ADD_INGREDIENT: return addIngredient(state, action);
         case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
-        case  actionTypes.SET_INGREDIENT: return setIngredient(state, action);
-        case  actionTypes.FETCH_INGREDIENT_ERROR: return fetchIngredientError(state);
+        case actionTypes.SET_INGREDIENT: return setIngredient(state, action);
+        case actionTypes.FETCH_INGREDIENT_ERROR: return fetchIngredientError(state);
         default: return state;
     }
 };

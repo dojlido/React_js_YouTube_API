@@ -26,17 +26,11 @@ export const purchaseBurgerFail = (errorParam: any) => {
 };
 
 export const sendOrderData = (orderDataParam: any, routerHistoryBack:any) => {
-    return (dispatch: any) => { //TODO send order to DATABASE
-        dispatch(purchaseBurgerStart());
-        axios.post('/orders.json', orderDataParam)
-            .then(response => {
-                dispatch( purchaseBurgerSucess(response.data.name, orderDataParam) );
-                return routerHistoryBack;
-            })
-            .catch(error => {
-                dispatch( purchaseBurgerFail(error) );
-            });
-    };
+    return {
+        type: actionTypes.SAGA_SEND_ORDER_DATA,
+        orderDataParam: orderDataParam,
+        routerHistoryBack: routerHistoryBack
+    }
 };
 
 export const purchaseInit = () => {
