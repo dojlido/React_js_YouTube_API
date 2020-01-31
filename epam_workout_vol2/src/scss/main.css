@@ -1,0 +1,19 @@
+div {
+  margin: 30px; }
+
+.MethodReferenceExample {
+  background-color: goldenrod;
+  color: red;
+  font-size: 14px; }
+
+.ReactStylingExample {
+  width: 400px;
+  height: 200px;
+  background-color: silver; }
+
+.showHideSectionConditionally .red {
+  background-color: red; }
+.showHideSectionConditionally .bold {
+  font-weight: bold; }
+
+/*# sourceMappingURL=main.css.map */
