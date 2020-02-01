@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,GAAI;EACH,MAAM,EAAC,IAAI;;ACDZ,uBAAwB;EACvB,gBAAgB,EAAE,SAAS;EAC3B,KAAK,EAAC,GAAG;EACT,SAAS,EAAE,IAAI;;ACHhB,oBAAqB;EACnB,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;EACb,gBAAgB,EAAE,MAAM;;ACFzB,kCAAK;EACJ,gBAAgB,EAAE,GAAG;AAErB,mCAAM;EACJ,WAAW,EAAE,IAAI",
-"sources": ["general.scss","MethodReferenceExample.scss","ReactStylingExample.scss","ShowHideSectionConditionally.scss"],
-"names": [],
-"file": "main.css"
-}

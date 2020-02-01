@@ -1,2 +1,0 @@
-ActionsCreators are use as helper functions (it's pattern) for dispatching action for example in BurgerBuilder.tsx  by using Readux thunk helper fuction can handle with asynchronus request like AXIOS
-(library for database connection)

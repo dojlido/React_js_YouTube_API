@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,gBAAiB;EACf,UAAU,EAAE,MAAM;EAClB,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,IAAI;;AAGd,yBAA0B;EACxB,gBAAiB;IACf,KAAK,EAAE,KAAK",
-"sources": ["CheckoutSummary.scss"],
-"names": [],
-"file": "CheckoutSummary.css"
-}

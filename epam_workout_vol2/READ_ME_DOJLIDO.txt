@@ -1,1 +1,0 @@
-Projekt pologon stworzony na podstawie kursu e-lernigowego SwarzMullera uDemy

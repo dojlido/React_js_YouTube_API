@@ -1,1 +1,0 @@
-Reducers give us possibility to store state thrue whole of application
