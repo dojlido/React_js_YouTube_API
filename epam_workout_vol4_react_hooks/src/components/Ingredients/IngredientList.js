@@ -7,10 +7,10 @@ const IngredientList = props => {
     <section className="ingredient-list">
       <h2>Loaded Ingredients</h2>
       <ul>
-        {props.ingredients.map(ig => (
-          <li key={ig.id} onClick={props.onRemoveItem.bind(this, ig.id)}>
-            <span>{ig.title}</span>
-            <span>{ig.amount}x</span>
+        {props.ingredients.map(ingredient => (
+          <li key={ingredient.id} onClick={props.removeIngredientHandler.bind(this, ingredient.id)}>
+            <span>Ingredient name: {ingredient.title}</span>
+            <span>Amount: {ingredient.amount}</span>
           </li>
         ))}
       </ul>
