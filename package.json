@@ -1,7 +1,7 @@
 {
     "name": "portfolio-dojlido-react",
     "dependencies": {
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.21",
         "react": "^15.5.4",
         "react-dom": "^15.5.4",
         "youtube-api-search": "0.0.5"
